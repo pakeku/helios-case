@@ -1,0 +1,42 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*credentials*.json
+*service-account*.json
+application_default_credentials.json
+.gcp/
+.bq/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Editor and OS
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+
+# Tool sidecars and scratch
+*.duckdb.wal
+*.wal
+~$*
+scratch/
+tmp/
+*.log
+
+# Only relevant if a site is added later
+node_modules/
+dist/
+.next/
+out/

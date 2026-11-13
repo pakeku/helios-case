@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Helios, first two weeks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    :root {
+      --ink: #1c1915;
+      --muted: #5c564c;
+      --line: #d9d2c5;
+      --paper: #f6f3ec;
+      --card: #fffdf8;
+      --mark: #8f3d1b;
+      --ok: #1e6b3a;
+      --warn: #8a5a00;
+      --now: #f3e2d6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 15px/1.45 "Segoe UI", sans-serif;
+      padding: 28px 28px 108px;
+    }
+
+    h1 {
+      font-size: 34px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      margin: 2px 0 6px;
+    }
+
+    .mast {
+      border-bottom: 2px solid var(--ink);
+      margin-bottom: 22px;
+      padding-bottom: 12px;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mark);
+      font-weight: 650;
+    }
+
+    .by {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .by span {
+      color: var(--muted);
+    }
+
+    .by span::before {
+      content: " · ";
+    }
+
+    .contact {
+      margin: 2px 0 8px;
+      font-size: 13px;
+    }
+
+    .contact a {
+      color: inherit;
+    }
+
+    .letter {
+      background: var(--card);
+      border-left: 3px solid var(--mark);
+      padding: 4px 16px;
+      max-width: 680px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 28px 0 8px;
+    }
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    .meta {
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 7px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    td.num,
+    th.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    td.mine,
+    th.mine {
+      width: 2.2em;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      font-weight: 650;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    td.note ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+    }
+
+    td.note li {
+      margin: 0 0 4px;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .now {
+      background: var(--now);
+    }
+
+    input[type="number"] {
+      width: 72px;
+      font: inherit;
+      padding: 3px 6px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    button,
+    .bar label.toggle {
+      font: inherit;
+      border: 1px solid var(--line);
+      background: white;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    button.on {
+      background: var(--ink);
+      color: white;
+      border-color: var(--ink);
+    }
+
+    .bar {
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--card);
+      border: 1px solid var(--ink);
+      padding: 10px 12px;
+      z-index: 5;
+    }
+
+    .total {
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .total b {
+      font-size: 20px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .short {
+      color: var(--mark);
+    }
+
+    .met {
+      color: var(--ok);
+    }
+
+    .scenarios {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 10px 0 16px;
+    }
+
+    .scenarios div {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+    }
+
+    .scenarios strong {
+      display: block;
+      font-size: 18px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stack {
+      columns: 2;
+      gap: 28px;
+    }
+
+    .stack p {
+      break-inside: avoid;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      font: inherit;
+      padding: 10px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .print-letter,
+    .print-note {
+      display: none;
+    }
+
+    .print-letter {
+      white-space: pre-wrap;
+    }
+
+    input.acv {
+      width: 118px;
+    }
+
+    input[type="date"] {
+      font: inherit;
+      padding: 3px 6px;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    tr.fill {
+      background: #e8eef2;
+    }
+
+    tr.observe td {
+      color: var(--muted);
+    }
+
+    .tip {
+      position: relative;
+    }
+
+    .tip-mark {
+      color: var(--mark);
+      text-decoration: underline dotted;
+      text-underline-offset: 2px;
+      cursor: help;
+    }
+
+    .tip-body {
+      display: none;
+      position: absolute;
+      z-index: 20;
+      left: 0;
+      top: calc(100% + 4px);
+      width: min(340px, 70vw);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.4;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    }
+
+    .tip:hover .tip-body,
+    .tip:focus .tip-body,
+    .tip:focus-within .tip-body {
+      display: block;
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+        font-size: 12px;
+      }
+
+      .bar {
+        display: none !important;
+      }
+
+      textarea,
+      .noprint {
+        display: none !important;
+      }
+
+      .print-letter {
+        display: block;
+      }
+
+      .scenarios {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+      }
+
+      .stack {
+        columns: 2 !important;
+      }
+
+      table,
+      .scenarios div,
+      tr.fill {
+        background: white;
+      }
+
+      h2 {
+        break-after: avoid;
+      }
+
+      tr,
+      .bar,
+      .print-letter {
+        break-inside: avoid;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .tip {
+        position: static;
+      }
+
+      .tip-mark {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .tip-body {
+        display: none !important;
+      }
+
+      .print-note {
+        display: block;
+      }
+
+      .print-note p {
+        color: var(--muted);
+        font-size: 11px;
+        margin: 0 0 6px;
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .scenarios,
+      .stack {
+        columns: 1;
+        display: block;
+      }
+
+      .scenarios div {
+        margin-bottom: 8px;
+      }
+
+      body {
+        padding: 16px 12px 140px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="mast">
+    <div class="brand">Helios Instruments</div>
+    <h1>First two weeks</h1>
+    <p class="by">Erick Pacheco <span>Strategy and Operations</span></p>
+    <p class="contact"><a href="mailto:e@pacheco.sh">e@pacheco.sh</a> · <a href="https://github.com/pakeku">github.com/pakeku</a></p>
+    <p class="meta">To the CIO. Monday, November 2, 2026. About 60 hours.</p>
+  </header>
+
+  <h2>The queue</h2>
+  <p>Re-assign and close go out first. 1-3 are the tickets I will handle initially.</p>
+  <table>
+    <thead>
+      <tr>
+        <th class="mine">Mine</th>
+        <th>Request</th>
+        <th>Call</th>
+        <th>Who</th>
+        <th>Why</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mine"></td>
+        <td>R7 Lukas, Hannover WiFi</td>
+        <td>Re-assign</td>
+        <td>Infra</td>
+        <td class="note">Hardware/On-site Connectivity falls under Infra. Push it to the Infra queue and project-manage the fix. Orders have to arrive and product has to
+          ship.</td>
+      </tr>
+      <tr>
+        <td class="mine"></td>
+        <td>R1 Dana, pipeline dashboard</td>
+        <td>Re-assign</td>
+        <td>Data Platform</td>
+        <td class="note">Data team specializes in Company dashboards, this is part of that role. QBR is Nov 13.</td>
+      </tr>
+      <tr>
+        <td class="mine"></td>
+        <td>R5 Jess, Writer</td>
+        <td>Close</td>
+        <td></td>
+        <td class="note">Close the ticket. Current available tools can support desired outcome.</td>
+      </tr>
+      <tr>
+        <td class="mine">1</td>
+        <td>R8 Sam, $400k software</td>
+        <td>Take</td>
+        <td>Me and CIO</td>
+        <td class="note">The architecture, and the technology that supports it. Solidify which systems stay, and the
+          licensing. Unlocks R3: which AI tools users have, and how that is billed, on one bill.
+          <ul>
+            <li>Immediately: email the Tableau vendor to cut the license to the 17 in use, especially since seats can be
+              added during the term. Vendors usually honor that if we can prove the request was sent.</li>
+            <li>Google Workspace is an observation, not in scope. Interviews were on Google Meet, and an MX check showed
+              Google for email. This pass uses the contracts in the extract.</li>
+          </ul>
+        </td>
+
+      </tr>
+      <tr>
+        <td class="mine">2</td>
+        <td>R3 Priya, AI on the IT card</td>
+        <td>Take</td>
+        <td>Me</td>
+        <td class="note">AI billing, from the R8 decisions. Due Nov 20.</td>
+      </tr>
+      <tr>
+        <td class="mine">3</td>
+        <td>R6 Mei, telemetry spec</td>
+        <td>Take</td>
+        <td>Me</td>
+        <td class="note">Kickoff Dec 1.</td>
+      </tr>
+      <tr>
+        <td class="mine"></td>
+        <td>R4 Tom, fifth technician</td>
+        <td>Take</td>
+        <td>Me and CIO</td>
+        <td class="note">Review historical tickets to identify what caused the 40% before a hire (could it be tickets
+          from the warehouse? misconfigured alerts generating tickets? Non-IT items that needed to be re-queued?). Meet
+          with the CIO to review before the budget reviews on Nov 20.</td>
+      </tr>
+      <tr>
+        <td class="mine"></td>
+        <td>R2 Marco, peripheral racks</td>
+        <td>Take</td>
+        <td>Me</td>
+        <td class="note">I build it. Connect Zendesk through Fivetran, build the automation on Snowflake, and put it on
+          a schedule. Last - not time bound. Nice to have.</td>
+      </tr>
+    </tbody>
+  </table>
+  <br />
+  <p><b>Order of work.</b> R7 leaves first. It has to go to the Infra queue. Then the numbered work on this desk. 1 is
+    R8. 2 is R3, due Nov 20. 3 is R6, kickoff Dec 1. R2 and R4 are also on this desk, and they are not in that 1-3. R5
+    is a close, not a piece of work. Inside R8, notice is already open: Tableau today, Dropbox Nov 15, Zoom Nov 16,
+    Copilot Nov 30 and it does not auto-renew, LastPass Dec 1, NetSuite and Salesforce Dec 30.</p>
+  <p><b>Handoff.</b> R7 to Infra. R1 to Data Platform. Same steps for both. Write the request down. Check in with the
+    owner before it is sent. Put a time on the calendar if it needs a meeting. Then send it.</p>
+  <p><b>What I am not doing.</b> Not building the dashboard. Not fixing the Hannover WiFi. Writer closes on the note
+    below.</p>
+  <p><b>Watchlist.</b> A handoff still has to move. Hannover is in the Infra queue, with a next step, and orders are
+    shipping. The dashboard is in the Data Platform queue ahead of the Nov 13 QBR. R3 is due Nov 20. R6 kicks off Dec 1.
+    The notice dates stay on the list until the renewal is handled. I would still add myself as to the ticket watchlist to keep track of it.</p> 
+
+  <h2>Is $400k real in 2027?</h2>
+  <p id="answer"></p>
+  
+  <div class="scenarios" id="compare"></div>
+
+  <p class="small">Cut and a seat trim never both count on the same row. Seats start from people active in the last 90
+    days.</p>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th>Tool</th>
+        <th>Act by</th>
+        <th>Increase</th>
+        <th class="num">Bought</th>
+        <th class="num">Active 90d</th>
+        <th class="num">Seats</th>
+        <th>Cut</th>
+        <th class="num">2027 saving</th>
+        <th class="num">Yearly saving</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <p class="small" id="book"></p>
+
+  <h2>Proposed Program</h2>
+  <div class="stack">
+    <p><b>Keep.</b> 1Password, Zendesk, Salesforce, NetSuite (minus 2 former employees), Figma, Snowflake, Fivetran.</p>
+    <p><b>Cut.</b> Zoom, Dropbox, LastPass, Grammarly, Smartsheet.</p>
+    <p><b>Fewer seats.</b> Tableau, Copilot, Gong, Adobe, Loom, Lucid, Miro, DocuSign, Zendesk, 1Password. Copilot
+      should move to usage pricing at the Nov 30 renewal. It does not auto-renew.</p>
+    <p><b>Other possible avenues for saving money:</b> Fivetran and Snowflake are already in the environment. Open
+      source can sit next to them: <span class="tip" tabindex="0"><span class="tip-mark">Twenty</span><span
+          class="tip-body" id="twentyTip">Twenty is open source. It would sit next
+          to tools already in the building: NetSuite for the books, Zendesk for support, and the order path for the
+          warehouse. Signing has an open-source option too, DocuSeal, beside the DocuSign seats. Either job can also be
+          built internally if the product is the wrong shape.</span></span> in place of Salesforce, DocuSeal for
+      signing, Bitwarden in place of 1Password. That takes internal engineering and support. The support is the kind
+      already provided, possibly at higher volume. The trade is more flexibility and less licensing. Salesforce is
+      $435,600 a year, and it needs specialized staff. Consulting, from experience, runs about $275 an hour.</p>
+  </div>
+  <div id="printNotes" class="print-note"></div>
+
+  <br>
+  <h2>Notes & Questions</h2>
+  <ol>
+    <li>1Password notes 771 active users (Okta for frontline staff Identity with personal email addresses?)</li>
+    <li>Google Workspace is an observation, kept in case, and not in scope. Interviews were on Google Meet. An MX check showed Google for email. This pass uses the contracts in the extract.</li>
+    <li>Fivetran isn't accounted for in the current budget. Need more info.</li>
+    <li>With data from HR (onboarding/offboarding), we can roughly estimate growth rate of staff and use the Growth %
+      tool to figure out how licensing should be planned for future.</li>
+  </ol>
+
+  <h2>Note to Jess Lindqvist</h2>
+  <div class="letter">
+    <p>Hi Jess,</p>
+
+    <p>Thanks for sharing the Writer proposal. We're working with Finance to determine a standardized approach to AI
+      procurement across the company, so we cannot approve Writer at this time.</p>
+
+    <p>That said, our technology team would be happy to partner with you and the Marketing team to better understand
+      your content needs and explore how the AI tools we already have available could support your workflows.</p>
+
+    <p>Please let me know if you'd be open to that. I'd be happy to coordinate a time to connect.</p>
+
+    <p>Best,<br>Erick</p>
+  </div>
+  <div id="letterPrint" class="print-letter"></div>
+  <div class="bar" id="bar">
+    <button type="button" data-preset="trim">Trim seats</button>
+    <button type="button" data-preset="both">Cut + trim</button>
+    <button type="button" data-preset="proposed">Proposed</button>
+    <label class="small">Growth %
+      <input id="growth" type="number" min="0" max="30" step="1" value="0">
+    </label>
+    <label class="small"><input id="team" type="checkbox"> Grow team tools too</label>
+    <div class="total">
+      <div class="small" id="modeLabel">Proposed</div>
+      <b id="live">$0</b>
+      <div class="small" id="gap"></div>
+    </div>
+  </div>
+
+  <script>
+    const TODAY = Date.UTC(2026, 10, 2);
+    const YSTART = Date.UTC(2027, 0, 1);
+    const YEND = Date.UTC(2027, 11, 31);
+    const DAY = 86400000;
+    const TARGET = 400000;
+
+    function iso(s) {
+      const [y, m, d] = s.split("-").map(Number);
+      return Date.UTC(y, m - 1, d);
+    }
+    const RAW = [
+      ["Grammarly", 7500, 50, "2027-02-28", 30, 14, "cut", false, "Gemini is already in Workspace."],
+      ["Dropbox", 13500, 75, "2026-12-15", 30, 11, "cut", false, "Drive is the standard. 11 people in 90 days."],
+      ["Microsoft 365", 17280, 120, "2027-06-30", 30, 63, "ask", false, "63 finance people still use it. Ask before cutting."],
+      ["DocuSign", 21600, 40, "2027-01-31", 30, 24, "trim", false, "Keep the tool. Trim empty seats. Legal is a separate contract."],
+      ["LastPass", 21600, 300, "2026-12-31", 30, 0, "cut", false, "288 still assigned, 31 of them former. Zero logins in 90 days. Notice by Dec 1."],
+      ["Loom", 21600, 120, "2027-01-31", 30, 31, "trim", false, "31 of 120. Meet covers a lot of this."],
+      ["Lucid", 26880, 140, "2027-04-30", 30, 58, "trim", false, "58 of 140. Product already has Miro."],
+      ["Smartsheet", 30000, 100, "2027-03-15", 30, 29, "cut", false, "29 people. Ops can live in Sheets."],
+      ["Copilot", 34200, 150, "2026-11-30", 0, 86, "trim", false, "Does not auto-renew. Drop empty seats. Ask for usage pricing."],
+      ["Miro", 34560, 180, "2027-02-28", 30, 98, "trim", false, "Trim to the 98 who use it."],
+      ["Adobe", 37800, 45, "2027-03-31", 30, 22, "trim", false, "Design seats. 22 of 45 opened it."],
+      ["Figma", 40320, 42, "2027-05-31", 30, 39, "keep", false, "39 of 42 editors. Leave it."],
+      ["Tableau", 54000, 60, "2027-01-31", 90, 17, "trim", false, "17 of 60 creators. Notice is today."],
+      ["Zoom", 67200, 400, "2027-01-15", 60, 131, "cut", false, "Meet is in Workspace. Rooms become Google resources."],
+      ["Gong", 72000, 60, "2027-03-31", 60, 34, "trim", false, "Sales team. Trim toward the 34 active."],
+      ["1Password", 81600, 850, "2027-05-31", 30, 771, "trim", true, "The headcount tool. 771 active. Company is about 850."],
+      ["Zendesk", 117300, 85, "2027-03-31", 30, 71, "trim", false, "Support desk. Small trim. Keep the product."],
+      ["Snowflake", 210000, 1, "2027-06-30", 0, null, "commit", false, "A commit, not seats. No usage in the extract."],
+      ["NetSuite", 318000, 95, "2027-02-28", 60, 86, "keep", false, "Drop the 2 seats held by people who left. Leave the rest."],
+      ["Salesforce", 435600, 220, "2027-02-28", 60, 151, "hard", false, "Idle seats are real and hard to get back. Not a rip-out."]
+    ];
+
+    const INCREASE = { Tableau: "Up to 7%", Salesforce: "Up to 7%", NetSuite: "Up to 8%" };
+    const KNOWN = RAW.reduce((s, r) => s + r[1], 0);
+    const rows = RAW.map((r) => ({
+      name: r[0], acv: r[1], units: r[2], renewal: iso(r[3]), notice: r[4],
+      active: r[5], mode: r[6], grows: r[7], note: r[8], tip: "",
+      increase: INCREASE[r[0]] || "",
+      cut: false, seats: r[2], fill: false, observe: false
+    })).sort((a, b) => a.renewal - a.notice * DAY - (b.renewal - b.notice * DAY));
+    rows.push({
+      name: "Fivetran", acv: 0, units: null, renewal: null, notice: 0,
+      active: null, mode: "keep", grows: false,
+      note: "Not in the extract. Pipeline into Snowflake. No saving until the order is in hand.",
+      tip: "", increase: "",
+      cut: false, seats: 0, fill: true, observe: false
+    });
+
+    rows.push({
+      name: "Google Workspace", acv: 0, units: null, renewal: null, notice: 0,
+      active: null, mode: "keep", grows: false,
+      note: "Observation only. Not in scope. Interviews were on Google Meet. An MX check showed Google for email. Kept in case. Dollars stay with the contracts in the extract.",
+      tip: "", increase: "",
+      cut: false, seats: 0, fill: false, observe: true
+    });
+
+
+    function actBy(c) { return c.renewal == null ? null : c.renewal - c.notice * DAY; }
+    function frac(c) {
+      if (c.renewal == null) return null;
+      if (c.renewal <= YSTART) return 1;
+      if (c.renewal >= YEND) return 0;
+      return (YEND - c.renewal) / (365 * DAY);
+    }
+    function growthRate() { return Math.max(0, Number(document.getElementById("growth").value) || 0) / 100; }
+    function teamOn() { return document.getElementById("team").checked; }
+    function floorSeats(c) {
+      if (c.active == null) return c.units;
+      const years = Math.max(0, (c.renewal - TODAY) / (365 * DAY));
+      const apply = c.grows || (teamOn() && (c.mode === "trim" || c.mode === "hard"));
+      const need = apply ? Math.ceil(c.active * (1 + growthRate() * years)) : c.active;
+      return Math.min(c.units, Math.max(0, need));
+    }
+    function money(n) {
+      return "$" + Math.round(n).toLocaleString("en-US");
+    }
+    function fmt(ms) {
+      return new Date(ms).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+    }
+    function isoDate(ms) {
+      if (ms == null) return "";
+      const d = new Date(ms);
+      const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+      const day = String(d.getUTCDate()).padStart(2, "0");
+      return d.getUTCFullYear() + "-" + m + "-" + day;
+    }
+    function esc(s) {
+      return String(s).replace(/[&<>"]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+    }
+    function lineSavings(c) {
+      if (c.observe) return { annual: 0, y2027: 0 };
+      if (c.fill) {
+        if (!c.cut || !(c.acv > 0)) return { annual: 0, y2027: 0 };
+        const f = frac(c);
+        return { annual: c.acv, y2027: f == null ? 0 : c.acv * f };
+      }
+      if (c.mode === "commit" || c.active == null) return { annual: 0, y2027: 0 };
+      const f = frac(c);
+      if (c.cut) return { annual: c.acv, y2027: c.acv * f };
+      const seats = Math.min(c.units, Math.max(0, c.seats));
+      const annual = (c.units - seats) / c.units * c.acv;
+      return { annual: Math.max(0, annual), y2027: Math.max(0, annual) * f };
+    }
+    function totals(skipFill) {
+      return rows.reduce((s, c) => {
+        if (skipFill && c.fill) return s;
+        const x = lineSavings(c);
+        s.annual += x.annual;
+        s.y2027 += x.y2027;
+        return s;
+      }, { annual: 0, y2027: 0 });
+    }
+    function applyPreset(name) {
+      const cuts = {
+        trim: [],
+        both: ["Grammarly", "Dropbox", "Microsoft 365", "LastPass", "Smartsheet", "Zoom", "Salesforce"],
+        proposed: ["Grammarly", "Dropbox", "LastPass", "Smartsheet", "Zoom"]
+      }[name];
+      rows.forEach((c) => {
+        if (c.fill) return;
+        c.cut = cuts.includes(c.name);
+        if (c.mode === "commit" || c.active == null) c.seats = c.units;
+        else if (c.cut) c.seats = 0;
+        else if (name === "proposed" && c.name === "NetSuite") c.seats = 93;
+        else if (c.mode === "trim" || c.mode === "hard") c.seats = floorSeats(c);
+        else c.seats = c.units;
+      });
+      state.preset = name;
+    }
+    function snapshot(name) {
+      const saved = rows.map((c) => ({ cut: c.cut, seats: c.seats }));
+      const preset = state.preset;
+      applyPreset(name);
+      const t = totals(true);
+      rows.forEach((c, i) => { c.cut = saved[i].cut; c.seats = saved[i].seats; });
+      state.preset = preset;
+      return t;
+    }
+    function proposedWithoutSalesforce() {
+      const saved = rows.map((c) => ({ cut: c.cut, seats: c.seats }));
+      const preset = state.preset;
+      applyPreset("proposed");
+      const sf = rows.find((c) => c.name === "Salesforce");
+      sf.cut = false;
+      sf.seats = sf.units;
+      const t = totals(true);
+      rows.forEach((c, i) => { c.cut = saved[i].cut; c.seats = saved[i].seats; });
+      state.preset = preset;
+      return t;
+    }
+
+    const state = { preset: "proposed" };
+    const tbody = document.querySelector("#grid tbody");
+
+    function bookLine() {
+      const entered = rows.filter((c) => c.fill && c.acv > 0);
+      if (!entered.length) {
+        return "Known book " + money(KNOWN) + ". Fivetran is not in the extract. An amount entered there is the contract, not a saving. Google Workspace is an observation and is not in this book.";
+      }
+      const extra = entered.reduce((s, c) => s + c.acv, 0);
+      const parts = entered.map((c) => c.name + " " + money(c.acv)).join(", ");
+      const counted = entered.filter((c) => c.cut && c.renewal != null);
+      const undated = entered.filter((c) => c.cut && c.renewal == null);
+      let tail = "Entered amounts are the contract, not a saving.";
+      if (undated.length) tail = "Marked cut. 2027 stays out until the renewal date is in.";
+      else if (counted.length) tail = "Marked cut, with a renewal date, so the saving is in the total.";
+      return "Known book " + money(KNOWN) + ". Entered: " + parts + ". Book with those: " + money(KNOWN + extra) + ". " + tail;
+    }
+    function render() {
+      tbody.innerHTML = "";
+      rows.forEach((c, i) => {
+        const s = lineSavings(c);
+        const when = actBy(c);
+        const days = when == null ? null : Math.round((when - TODAY) / DAY);
+        const tr = document.createElement("tr");
+        if (c.observe) tr.className = "observe";
+        else if (c.fill) tr.className = "fill";
+        else if (days <= 0) tr.className = "now";
+        const seatDisabled = c.mode === "commit" || c.active == null || c.cut;
+        let whenLabel = "—";
+        let whenNote = "";
+        if (c.observe) {
+          whenNote = "Not in scope";
+        } else if (c.fill) {
+          whenLabel = "<input type='date' data-renew='" + i + "' value='" + isoDate(c.renewal) + "'>";
+          whenNote = c.cut && c.acv > 0 && c.renewal == null ? "Date missing. 2027 not counted." : "Renewal, if known.";
+        } else {
+          whenLabel = days <= 0 ? fmt(when) + " · now" : fmt(when);
+          whenNote = days > 0 ? days + " days" : "act this week";
+        }
+        const tip = c.tip ? " <span class='tip' tabindex='0'><span class='tip-mark noprint'>note</span><span class='tip-body'>" + esc(c.tip) + "</span></span>" : "";
+        const acvInput = c.fill
+          ? "<div><input class='acv' type='number' min='0' step='1' placeholder='annual $' aria-label='Annual value for " + esc(c.name) + "' data-acv='" + i + "' value='" + (c.acv > 0 ? c.acv : "") + "'></div>"
+          : "";
+        const bought = (c.observe || c.fill) ? "—" : (c.mode === "commit" ? "commit" : c.units);
+        const seats = (c.observe || c.fill)
+          ? "—"
+          : "<input type='number' min='0' max='" + c.units + "' step='1' value='" + c.seats + "'" + (seatDisabled ? " disabled" : "") + " data-i='" + i + "'>";
+        const savings2027 = c.observe ? "—" : money(s.y2027);
+        const savingsAnnual = c.observe ? "—" : money(s.annual);
+        tr.innerHTML =
+          "<td><b>" + esc(c.name) + "</b>" + tip + acvInput + "<div class='note'>" + esc(c.note) + "</div></td>" +
+          "<td>" + whenLabel + "<div class='note'>" + esc(whenNote) + "</div></td>" +
+          "<td>" + (c.increase ? esc(c.increase) : "—") + "</td>" +
+          "<td class='num'>" + bought + "</td>" +
+          "<td class='num'>" + (c.active == null ? "—" : c.active) + "</td>" +
+          "<td class='num'>" + seats + "</td>" +
+          "<td><input type='checkbox' data-cut='" + i + "'" + (c.cut ? " checked" : "") + (c.observe || c.mode === "commit" ? " disabled" : "") + "></td>" +
+          "<td class='num'>" + savings2027 + "</td>" +
+          "<td class='num'>" + savingsAnnual + "</td>";
+        tbody.appendChild(tr);
+      });
+      document.getElementById("book").textContent = bookLine();
+      const t = totals();
+      document.getElementById("live").textContent = money(t.y2027);
+      const gap = t.y2027 - TARGET;
+      const gapEl = document.getElementById("gap");
+      gapEl.textContent = (gap >= 0 ? "Clears $400k by " + money(gap) : "Short of $400k by " + money(-gap)) + " · " + money(t.annual) + " a year";
+      gapEl.className = "small " + (gap >= 0 ? "met" : "short");
+      document.getElementById("modeLabel").textContent = state.preset === "trim" ? "Trim seats" : state.preset === "both" ? "Cut + trim" : state.preset === "proposed" ? "Proposed" : "Custom";
+      document.querySelectorAll("#bar button").forEach((b) => b.classList.toggle("on", b.dataset.preset === state.preset));
+      const names = { trim: "Trim seats", both: "Cut + trim", proposed: "Proposed" };
+      document.getElementById("compare").innerHTML = ["trim", "both", "proposed"].map((name) => {
+        const x = snapshot(name);
+        const mark = name === state.preset ? " style='border-color:#1c1915'" : "";
+        return "<div" + mark + "><span class='small'>" + names[name] + "</span><strong>" + money(x.y2027) + "</strong><span class='small'>in 2027 · " + money(x.annual) + " a year</span></div>";
+      }).join("");
+      const proposed = snapshot("proposed");
+      const noSf = proposedWithoutSalesforce();
+      const answer = document.getElementById("answer");
+      answer.innerHTML = "On this set: <b>" + money(t.y2027) + "</b> out of the 2027 budget, <b>" + money(t.annual) + "</b> every year after. "
+        + "The proposed mix is <b>" + money(proposed.y2027) + "</b> in 2027. That includes Salesforce down to the 151 people who used it, and 2 NetSuite seats still held by people who left. "
+        + "Leave Salesforce at 220 seats and the same cuts are <b>" + money(noSf.y2027) + "</b>. "
+        + "Cancelling Salesforce outright is past $400k, and it is a replacement project, not a renewal.";
+    }
+
+    document.getElementById("bar").addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      applyPreset(btn.dataset.preset);
+      render();
+    });
+    document.getElementById("growth").addEventListener("input", () => {
+      if (state.preset !== "custom") applyPreset(state.preset);
+      render();
+    });
+    document.getElementById("team").addEventListener("change", () => {
+      if (state.preset !== "custom") applyPreset(state.preset);
+      render();
+    });
+    tbody.addEventListener("input", (e) => {
+      const t = e.target;
+      if (t.dataset.acv == null) return;
+      const c = rows[+t.dataset.acv];
+      c.acv = Math.max(0, Number(t.value) || 0);
+      document.getElementById("book").textContent = bookLine();
+      if (!c.cut) return;
+      const s = lineSavings(c);
+      const cells = t.closest("tr").cells;
+      cells[7].textContent = money(s.y2027);
+      cells[8].textContent = money(s.annual);
+      const tot = totals();
+      document.getElementById("live").textContent = money(tot.y2027);
+      const gap = tot.y2027 - TARGET;
+      const gapEl = document.getElementById("gap");
+      gapEl.textContent = (gap >= 0 ? "Clears $400k by " + money(gap) : "Short of $400k by " + money(-gap)) + " · " + money(tot.annual) + " a year";
+      gapEl.className = "small " + (gap >= 0 ? "met" : "short");
+    });
+    tbody.addEventListener("change", (e) => {
+      const t = e.target;
+      if (t.dataset.acv != null) {
+        const c = rows[+t.dataset.acv];
+        c.acv = Math.max(0, Number(t.value) || 0);
+        if (c.cut) state.preset = "custom";
+        render();
+        return;
+      }
+      if (t.dataset.renew != null) {
+        const c = rows[+t.dataset.renew];
+        c.renewal = t.value ? iso(t.value) : null;
+        if (c.cut) state.preset = "custom";
+        render();
+        return;
+      }
+      if (t.dataset.i != null) {
+        const c = rows[+t.dataset.i];
+        c.seats = Math.min(c.units, Math.max(0, Number(t.value) || 0));
+        c.cut = false;
+      }
+      if (t.dataset.cut != null) {
+        const c = rows[+t.dataset.cut];
+        c.cut = t.checked;
+        if (c.fill) {
+          if (!c.cut) c.seats = 0;
+        } else if (c.cut) c.seats = 0;
+        else c.seats = c.active == null ? c.units : floorSeats(c);
+      }
+      state.preset = "custom";
+      render();
+    });
+
+    const letter = document.getElementById("letter");
+    const letterPrint = document.getElementById("letterPrint");
+    function syncLetter() {
+      if (!letter || !letterPrint) return;
+      letterPrint.textContent = letter.value;
+    }
+    function syncPrintNotes() {
+      const box = document.getElementById("printNotes");
+      const parts = rows.filter((c) => c.tip).map((c) => "<p><b>" + esc(c.name) + ".</b> " + esc(c.tip) + "</p>");
+      const twenty = document.getElementById("twentyTip");
+      if (twenty) parts.push("<p><b>Twenty.</b> " + esc(twenty.textContent) + "</p>");
+      box.innerHTML = parts.join("");
+    }
+    if (letter) letter.addEventListener("input", syncLetter);
+    syncLetter();
+    syncPrintNotes();
+    applyPreset("proposed");
+    render();
+  </script>
+</body>
+
+</html>
